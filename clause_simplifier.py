@@ -21,7 +21,7 @@ def generate_response(prompt):
         max_tokens=1624,
         n=1,
         stop=None,
-        temperature=0.7,
+        temperature=0.5,
     )
     message = completions.choices[0].text
     return message
