@@ -4,6 +4,7 @@ import streamlit as st
 # Set OpenAI API key from Streamlit secrets
 openai.api_key = st.secrets["key_openai"]
 
+
 # Define Streamlit app title and sidebar content
 st.set_page_config(page_title="Clause Craft")
 st.sidebar.markdown("# Configs")
@@ -34,10 +35,16 @@ def get_input():
 def main():
     st.title("Clause Craft")
     user_input = get_input()
+    prompt_design="Rephrase the given inputed legal text in simpler language, using active voice. Maintain the original meaning. Input:"
     if st.button("Craft!"):
-        prompt = f"Rewrite the clause in {output_lang} {st.secrets['prompt_hilex2']} {user_input}"
-        response = generate_response(prompt)
-        st.write(response)
+        with st.spinner('Crafting...'):
+            prompt = f"Rewrite the clause in {output_lang} {prompt_design} {user_input}"
+            response = generate_response(prompt)
+            num_words_input = len(user_input.split())
+            num_words_output = len(response.split())
+            num_words_reduced = num_words_input - num_words_output
+            st.write(response)
+            st.markdown(f"<p style='font-size: 24px; color: #990000;'>Words Reduced: {num_words_reduced}</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
